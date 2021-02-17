@@ -15,6 +15,8 @@
 
 #include "usb_descriptors.h"
 
+#define smooth_size 10   //higher number = more smoothing
+
 const uint8_t ENC_SENS = 10;        // Encoder sensitivity multiplier
 const uint8_t L_ENC_GPIO[] = {0, 1};
 const uint8_t R_ENC_GPIO[] = {2, 3};
@@ -34,45 +36,70 @@ static const char *gpio_irq_str[] = {
 
 int l_enc=0, r_enc=0, l_state, r_state;
 
+const bool smooth_enabled = false;   //enable or disable smoothing here
+int l_smooth[smooth_size] = {0}, r_smooth[smooth_size] = {0};
+int l_smooth_idx = 0, r_smooth_idx = 0;
+bool need_update_mouse = false;
+
+/**
+ * Smoothing Encoder Input
+ **/
+int enc_smooth_dir(int smooth[]) {
+    int dir_sum = 0;
+    for (int i = 0; i < smooth_size; i++) {
+        dir_sum += smooth[i];
+    }
+    return dir_sum;
+}
+
 /**
  * Encoder Callback
  **/
 void gpio_enc_callback(uint gpio, uint32_t events) {
     if (gpio == L_ENC_GPIO[0] || gpio == L_ENC_GPIO[1]) {
         uint8_t s = l_state & 3;
+        int position = 0;
         if (gpio_get(L_ENC_GPIO[0])) s |= 4;
         if (gpio_get(L_ENC_GPIO[1])) s |= 8;
         switch (s) {
             case 0: case 5: case 10: case 15:
                 break;
             case 1: case 7: case 8: case 14:
-                l_enc++; break;
+                l_enc++; position++; break;
             case 2: case 4: case 11: case 13:
-                l_enc--; break;
+                l_enc--; position--; break;
             case 3: case 12:
-                l_enc += 2; break;
+                l_enc += 2; position += 2; break;
             default:
-                l_enc -= 2; break;
+                l_enc -= 2; position -= 2; break;
         }
         l_state = (s >> 2);
+        // save position into smoothing buffer
+        l_smooth[l_smooth_idx] = position;
+        l_smooth_idx = ++l_smooth_idx % smooth_size;
     } else {
         uint8_t s = r_state & 3;
+        int position = 0;
         if (gpio_get(R_ENC_GPIO[0])) s |= 4;
         if (gpio_get(R_ENC_GPIO[1])) s |= 8;
         switch (s) {
             case 0: case 5: case 10: case 15:
                 break;
             case 1: case 7: case 8: case 14:
-                r_enc++; break;
+                r_enc++; position++; break;
             case 2: case 4: case 11: case 13:
-                r_enc--; break;
+                r_enc--; position--; break;
             case 3: case 12:
-                r_enc += 2; break;
+                r_enc += 2; position += 2; break;
             default:
-                r_enc -= 2; break;
+                r_enc -= 2; position -= 2; break;
         }
         r_state = (s >> 2);
+        // save position into smoothing buffer
+        r_smooth[r_smooth_idx] = position;
+        r_smooth_idx = ++r_smooth_idx % smooth_size;
     }
+    need_update_mouse = true;
 }
 
 /**
@@ -144,13 +171,21 @@ void key_mode() {
         // send empty key report if previously has key pressed
         if (!isPressed) tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
 
-        // delay a bit before attempt to send keyboard report
-        board_delay(10);
+        if (need_update_mouse) {
+            // delay a bit before attempt to send keyboard report
+            board_delay(10);
 
-        /*------------- Mouse -------------*/
-        tud_hid_mouse_report(REPORT_ID_MOUSE, 0x00, l_enc * ENC_SENS, r_enc * ENC_SENS, 0, 0);
-        l_enc = 0;
-        r_enc = 0;
+            /*------------- Mouse -------------*/
+            tud_hid_mouse_report(REPORT_ID_MOUSE, 0x00,
+                (smooth_enabled ? enc_smooth_dir(l_smooth) : l_enc) * ENC_SENS,
+                (smooth_enabled ? enc_smooth_dir(r_smooth) : r_enc) * ENC_SENS, 0, 0);
+            for (int i = 0; i < smooth_size; i++) {
+                l_smooth[i] = 0;
+                r_smooth[i] = 0;
+            }
+            l_enc = 0;
+            r_enc = 0;
+        }
     }
 }
 

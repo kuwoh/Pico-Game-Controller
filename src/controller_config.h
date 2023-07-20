@@ -16,14 +16,16 @@
 #ifdef PICO_GAME_CONTROLLER_C
 
 // MODIFY KEYBINDS HERE, MAKE SURE LENGTHS MATCH SW_GPIO_SIZE
-const uint8_t SW_KEYCODE[] = {HID_KEY_D, HID_KEY_F, HID_KEY_J, HID_KEY_K,
-                              HID_KEY_C, HID_KEY_M, HID_KEY_A, HID_KEY_B,
-                              HID_KEY_1, HID_KEY_E, HID_KEY_G};
+const uint8_t SW_KEYCODE[] = {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7,
+                              HID_KEY_R, HID_KEY_T, HID_KEY_Y, HID_KEY_U,
+                              HID_KEY_F, HID_KEY_G, HID_KEY_H, HID_KEY_J,
+                              HID_KEY_V, HID_KEY_B, HID_KEY_N, HID_KEY_M,
+                              HID_KEY_I, HID_KEY_O};
 const uint8_t SW_GPIO[] = {
-    4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
+    4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
 };
 const uint8_t LED_GPIO[] = {
-    26, 27
+    22, 26, 27
 };
 const uint8_t ENC_GPIO[] = {0, 2};      // L_ENC(0, 1); R_ENC(2, 3)
 const bool ENC_REV[] = {false, false};  // Reverse Encoders

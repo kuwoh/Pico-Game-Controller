@@ -180,6 +180,7 @@ char const* string_desc_arr[] = {
     "Button 16",
     "Button 17",
     "Button 18",
+    "Button 19",
     "Red 1",
     "Green 1",
     "Blue 1",

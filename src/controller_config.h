@@ -19,8 +19,7 @@
 
 // MODIFY KEYBINDS HERE, MAKE SURE LENGTHS MATCH SW_GPIO_SIZE
 const uint8_t SW_KEYCODE[] = {HID_KEY_D, HID_KEY_F, HID_KEY_J, HID_KEY_K,
-                              HID_KEY_C, HID_KEY_M, HID_KEY_A, HID_KEY_B,
-                              HID_KEY_1, HID_KEY_E, HID_KEY_G};
+                              HID_KEY_C, HID_KEY_M, HID_KEY_A};
 const uint8_t SW_GPIO[] = {
     4, 6, 8, 10, 12, 14, 26,
 };

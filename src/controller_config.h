@@ -4,13 +4,13 @@
 #define SW_GPIO_SIZE 11               // Number of switches
 #define LED_GPIO_SIZE 10              // Number of switch LEDs
 #define ENC_GPIO_SIZE 2               // Number of encoders
-#define ENC_PPR 600                   // Encoder PPR
+#define ENC_PPR 24                   // Encoder PPR
 #define MOUSE_SENS 1                  // Mouse sensitivity multiplier
 #define ENC_DEBOUNCE false            // Encoder Debouncing
 #define SW_DEBOUNCE_TIME_US 4000      // Switch debounce delay in us
 #define ENC_PULSE (ENC_PPR * 4)       // 4 pulses per PPR
 #define REACTIVE_TIMEOUT_MAX 1000000  // HID to reactive timeout in us
-#define WS2812B_LED_SIZE 10           // Number of WS2812B LEDs
+#define WS2812B_LED_SIZE 8           // Number of WS2812B LEDs
 #define WS2812B_LED_ZONES 2           // Number of WS2812B LED Zones
 #define WS2812B_LEDS_PER_ZONE \
   WS2812B_LED_SIZE / WS2812B_LED_ZONES  // Number of LEDs per zone

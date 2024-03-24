@@ -1,8 +1,8 @@
 #ifndef CONTROLLER_CONFIG_H
 #define CONTROLLER_CONFIG_H
 
-#define SW_GPIO_SIZE 11               // Number of switches
-#define LED_GPIO_SIZE 10              // Number of switch LEDs
+#define SW_GPIO_SIZE 7               // Number of switches
+#define LED_GPIO_SIZE 7              // Number of switch LEDs
 #define ENC_GPIO_SIZE 2               // Number of encoders
 #define ENC_PPR 24                   // Encoder PPR
 #define MOUSE_SENS 1                  // Mouse sensitivity multiplier

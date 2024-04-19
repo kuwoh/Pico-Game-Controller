@@ -30,12 +30,12 @@ TODO:
 
 How to Use:
 
-- For basic flashing, see README in build_uf2
 - Otherwise, setup the C++ environment for the Pi Pico as per https://datasheets.raspberrypi.org/pico/getting-started-with-pico.pdf
 - Build pico-examples directory once to ensure all the tinyusb and other libraries are there. You might have to move the pico-sdk folder into pico-examples/build for it to play nice.
 - Move pico-sdk back outside to the same level directory as Pico-Game-Controller.
 - Open Pico-Game-Controller in VSCode(assuming this is setup for the Pi Pico) and see if everything builds.
 - Tweakable parameters are in controller_config.h
+- After compiling search for uf2 file (This is due to me using an older build orz...)
 
 Thanks to:
 
